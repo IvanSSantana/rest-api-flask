@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
+from flasgger import Swagger
 
 app = Flask(__name__)
 api = Api(app)
+swagger = Swagger(app, template_file='docs.yml') # Configurating the documentation
 
 # Configurating the database for our API
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
@@ -38,9 +40,9 @@ video_put_args.add_argument("likes", type=int, help="Number of video likes is re
 video_put_args.add_argument("name", type=str, help="Name of the video is required!", required=True)
 video_put_args.add_argument("views", type=int, help="Number of video views is required!", required=True)
 
-video_patch_args.add_argument("likes", type=int, help="Number of video likes is required!")
-video_patch_args.add_argument("name", type=str, help="Name of the video is required!")
-video_patch_args.add_argument("views", type=int, help="Number of video views is required!")
+video_patch_args.add_argument("likes", type=int, help="Number of video likes")
+video_patch_args.add_argument("name", type=str, help="Name of the video")
+video_patch_args.add_argument("views", type=int, help="Number of video views")
 
 # Serializing the database
 resource_fields = {
@@ -84,6 +86,7 @@ class Video(Resource):
       db.session.commit()
       return video, 201
 
+   @marshal_with(resource_fields)
    def patch(self, video_id):
       abort_if_video_doesnt_exists(video_id)
 

@@ -1,0 +1,130 @@
+swagger: "2.0"
+info:
+  title: "Video API"
+  description: "REST Minimal API using Flask and SQLAlchemy."
+  version: "1.0.0"
+
+host: "localhost:5000"
+basePath: "/"
+schemes:
+  - "http"
+
+paths:
+  /video/{video_id}:
+    get:
+      summary: "Search a video"
+      description: "Returns a video according to sent Id."
+      parameters:
+        - name: "video_id"
+          in: "path"  
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Video searched sucessfully"
+          schema:
+            $ref: "#/definitions/Video"
+        404:
+          description: "Video not found"
+    put:
+      summary: "Create video"
+      description: "Create a new video with all required data."
+      parameters:
+        - name: "video_id"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/VideoInput"
+      responses:
+        201:
+          description: "Video created sucessfully"
+          schema:
+            $ref: "#/definitions/Video"
+        409:
+          description: "Video already exists with this Id"
+    patch:
+      summary: "Update a video"
+      description: "Update partially a existent video."
+      parameters:
+        - name: "video_id"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/VideoPatch"
+      responses:
+        200:
+          description: "Video updated"
+          schema:
+            $ref: "#/definitions/Video"
+        400:
+          description: "No arguments provided for update"
+        404:
+          description: "Video not found"
+    delete:
+      summary: "Delete a video"
+      description: "Removes a existent video"
+      parameters:
+        - name: "video_id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        204:
+          description: "Deleted video sucessfully"
+        404:
+          description: "Video not found"
+
+definitions:
+  Video:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        example: 1
+      name:
+        type: "string"
+        example: "First Video"
+      views:
+        type: "integer"
+        example: 100
+      likes:
+        type: "integer"
+        example: 10
+  
+  VideoInput:
+    type: "object"
+    required:
+      - name
+      - views
+      - likes
+    properties:
+      name:
+        type: "string"
+        example: "My Last Video"
+      views:
+        type: "integer"
+        example: 100
+      likes:
+        type: "integer"
+        example: 25
+
+  VideoPatch:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "My new Name"
+      views:
+        type: "integer"
+        example: 200
+      likes:
+        type: "integer"
+        example: 50
