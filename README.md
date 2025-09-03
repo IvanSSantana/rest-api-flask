@@ -7,7 +7,6 @@
 #### Melhorias futuras:
 1. Melhorar tratamento de erros.
 2. Trabalhar com banco de dados Postgres.
-3. Criar documentação automática com Swagger.
 
 ## English
 - A simple REST API made with Flask for studies.
@@ -18,4 +17,3 @@
 #### Future improvements:
 1. Improve error handling.
 2. Use Postgres database.
-3. Create automatic documentation using Swagger.
